@@ -1,0 +1,20 @@
+extends index
+block areas
+	include areas
+block network
+	include network
+block global
+	h2 Cuadro histórico del sensor
+	#monitor-sensor
+		include monitor
+	#title
+		h3 Evolución de las últimas 24 horas
+	#cosm-charts
+		include cosm-charts
+	.btn-group(data-toggle='buttons-radio')
+		button#btn-1d.btn.btn-mini 1 día
+		button#btn-1s.btn.btn-mini 1 semana
+		button#btn-1m.btn.btn-mini 1 mes
+		button#btn-3m.btn.btn-mini 3 meses
+block misc
+

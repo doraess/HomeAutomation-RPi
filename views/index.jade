@@ -1,0 +1,106 @@
+html
+	head
+		title Pagina principal de Home Automation
+		meta(http-equiv='Content-type', content='text/html; charset=UTF-8')
+		link(href='http://fonts.googleapis.com/css?family=Quicksand:300,400,700', rel='stylesheet', type='text/css')
+		link(rel='stylesheet', href='/bootstrap/css/bootstrap-responsive.css')
+		link(rel='stylesheet', href='/bootstrap/css/bootstrap.min.css')
+		link(rel='shortcut icon', href='images/favicon.ico')
+		link(rel='stylesheet', href='/stylesheets/style.css')
+		script(type='text/javascript')
+			String.prototype.format = function() {
+				var args = arguments;
+				return this.replace(/{(\d+)}/g, function(match, number) { 
+				return typeof args[number] != 'undefined'
+					? args[number]
+					: match
+					;
+					});
+			};
+		script(type='text/javascript')
+			function refresh() {
+				$.ajax({
+					url: '{% url monitor sensor.area.id sensor.id %}',
+					success: function(data) {
+						$('#monitor-sensor').fadeOut("slow").html(data).fadeIn("slow");
+						}
+				});
+				
+				$.ajax({
+					url: '{% url cosm sensor.area.id sensor.id %}',
+					success: function(data) {
+						$('#cosm-charts').fadeOut("slow").html(data).fadeIn("slow");
+						}
+					});
+				
+				setTimeout("refresh()", 60000);
+			}
+				
+			$(function(){
+				refresh();
+				$('.btn-group').button();
+				$('.dropdown-toggle').dropdown();
+				var graphics_content = '<table><tr><td><img src="https://api.cosm.com/v2/feeds/68035/datastreams/temp-1.png?width=450&height=200&colour=%23CC6666&duration=1week&title=Temperatura&show_axis_labels=true&detailed_grid=true&scale=manual&min=0&max=40&timezone=Madrid"></td><td><img src="https://api.cosm.com/v2/feeds/68035/datastreams/hum-1.png?width=450&height=200&colour=%23669999&duration=1week&title=Humedad&show_axis_labels=true&detailed_grid=true&scale=manual&min=0&max=100&timezone=Madrid"></td></tr><tr><td><img src="https://api.cosm.com/v2/feeds/68035/datastreams/bat-1.png?width=450&height=200&colour=%23669966&duration=1week&title=Bateria&show_axis_labels=true&detailed_grid=true&scale=manual&min=0&max=2&timezone=Madrid"><td><img src="https://api.cosm.com/v2/feeds/68035/datastreams/luz-1.png?width=450&height=200&colour=%233366CC&duration=1week&title=Luminosidad&show_axis_labels=true&detailed_grid=true&scale=manual&min=0&max=120&timezone=Madrid"></td></tr></table>';
+				$("#btn-1d").click(function() {
+					$('#cosm-charts').html(graphics_content.replace(/duration=1week/g,"duration=1day"));
+					$('#title').html('<h3>EvoluciÃ³n de las Ãºltimas 24 horas<h3>');
+				});
+				$("#btn-1s").click(function() {
+					$('#cosm-charts').html(graphics_content.replace(/duration=1week/g,"duration=1week"));
+					$('#title').html('<h3>EvoluciÃ³n de la Ãºltima semana<h3>');
+				});
+				$("#btn-1m").click(function() {
+					$('#cosm-charts').html(graphics_content.replace(/duration=1week/g,"duration=30days"));
+					$('#title').html('<h3>EvoluciÃ³n del Ãºltimo mes<h3>');
+				});
+				$("#btn-3m").click(function() {
+					$('#cosm-charts').html(graphics_content.replace(/duration=1week/g,"duration=3months"));
+					$('#title').html('<h3>EvoluciÃ³n de los Ãºltimos 3 meses<h3>');
+				});
+				});
+
+	body
+		.container.navbar-wrapper
+			.navbar.navbar-inverse
+				.navbar-inner
+					a.brand(href='/') Home Automation
+					ul.nav
+						li.dropdown 
+							a.dropdown-toggle(href='#', data-toggle='dropdown')  Salón
+								ul.dropdown-menu
+									li 
+										a(href='/area/1/sensors/1') Salón-1
+						li.dropdown 
+							a.dropdown-toggle(href='/Despacho', data-toggle='dropdown') Despacho
+								ul.dropdown-menu
+									li 
+										a(href='/Despacho/1') Despacho-1
+						li.dropdown 
+							a.dropdown-toggle(href='/Habitación', data-toggle='dropdown') Dormitorio
+								ul.dropdown-menu
+									li 
+										a(href='/Habitación/1') Habitación-1
+		#contenedor.row-fluid
+			.sidebar-nav.span3
+				#areas.well
+					block areas
+				#network.well
+					block network
+				#misc.well
+					block misc
+			#global.well.span9
+				
+
+		script(src='//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js', type='text/javascript')
+		script(src='bootstrap/js/bootstrap-transition.js')
+		script(src='bootstrap/js/bootstrap-alert.js')
+		script(src='bootstrap/js/bootstrap-modal.js')
+		script(src='bootstrap/js/bootstrap-dropdown.js')
+		script(src='bootstrap/js/bootstrap-scrollspy.js')
+		script(src='bootstrap/js/bootstrap-tab.js')
+		script(src='bootstrap/js/bootstrap-tooltip.js')
+		script(src='bootstrap/js/bootstrap-popover.js')
+		script(src='bootstrap/js/bootstrap-button.js')
+		script(src='bootstrap/js/bootstrap-collapse.js')
+		script(src='bootstrap/js/bootstrap-carousel.js')
+		script(src='bootstrap/js/bootstrap-typeahead.js')
